@@ -14,7 +14,7 @@ export const generalLimiter = rateLimit({
 // Auth rate limiter (more restrictive)
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 5 auth requests per windowMs
+  max: 100, // limit each IP to 100 auth requests per windowMs
   message: {
     error: 'Trop de tentatives d\'authenfication, veuillez réessayer plus tard'
   },
