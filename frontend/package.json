@@ -12,11 +12,14 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
+    "@uiw/react-md-editor": "^4.0.8",
     "axios": "^1.11.0",
+    "lucide-react": "^0.532.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
     "react-toastify": "^11.0.5",
+    "rehype-sanitize": "^6.0.0",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
