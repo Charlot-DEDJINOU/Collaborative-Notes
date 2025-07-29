@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import {
   createNote,
-  getNotes,
+  getOwnNotes,
+  getSharedNotes,
   getNoteById,
   updateNote,
   deleteNote,
@@ -52,10 +53,10 @@ router.post('/', authenticate, validate(noteSchema), createNote);
 
 /**
  * @swagger
- * /api/notes:
+ * /api/notes/own:
  *   get:
  *     tags: [Notes]
- *     summary: Récupérer les notes de l'utilisateur
+ *     summary: Récupérer les notes dont l'utilisateur est l'auteur
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -89,9 +90,52 @@ router.post('/', authenticate, validate(noteSchema), createNote);
  *         description: Nombre d'éléments par page
  *     responses:
  *       200:
- *         description: Liste des notes
+ *         description: Liste des notes de l'utilisateur (propre)
  */
-router.get('/', authenticate, getNotes);
+router.get('/own', authenticate, getOwnNotes);
+
+/**
+ * @swagger
+ * /api/notes/shared:
+ *   get:
+ *     tags: [Notes]
+ *     summary: Récupérer les notes partagées avec l'utilisateur
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Recherche dans le titre et contenu
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [private, shared, public]
+ *         description: Filtrer par statut de visibilité
+ *       - in: query
+ *         name: tags
+ *         schema:
+ *           type: string
+ *         description: Filtrer par tags (séparés par des virgules)
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Numéro de page
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Nombre d'éléments par page
+ *     responses:
+ *       200:
+ *         description: Liste des notes partagées avec l'utilisateur
+ */
+router.get('/shared', authenticate, getSharedNotes);
 
 /**
  * @swagger
@@ -220,7 +264,7 @@ router.post('/:id/share', authenticate, validate(shareNoteSchema), shareNote);
 /**
  * @swagger
  * /api/notes/{id}/unshare:
- *   delete:
+ *   post:
  *     tags: [Notes]
  *     summary: Retirer un utilisateur du partage d'une note
  *     security:
@@ -264,7 +308,7 @@ router.post('/:id/share', authenticate, validate(shareNoteSchema), shareNote);
  *       404:
  *         description: Note ou utilisateur non trouvé
  */
-router.delete('/:id/unshare', authenticate, validate(shareNoteSchema), removeUserFromNote);
+router.post('/:id/unshare', authenticate, validate(shareNoteSchema), removeUserFromNote);
 
 /**
  * @swagger
