@@ -18,7 +18,7 @@ const auth = useAuthService();
 type AuthAction =
   | { type: 'AUTH_START' }
   | { type: 'AUTH_SUCCESS'; payload: { user: User; token: string } }
-  | { type: 'AUTH_FAILURE'; payload: string }
+  | { type: 'AUTH_FAILURE' }
   | { type: 'LOGOUT' }
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_USER'; payload: User };
@@ -94,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const checkAuth = async () => {
       
       if (!auth.isAuthenticated()) {
-        dispatch({ type: 'AUTH_FAILURE', payload: '' });
+        dispatch({ type: 'AUTH_FAILURE' });
         return;
       }
 
@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
       } catch (error) {
         await logout()
-        dispatch({ type: 'AUTH_FAILURE', payload: '' });
+        dispatch({ type: 'AUTH_FAILURE' });
       }
     };
 
@@ -123,7 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         payload: response 
       });
     } catch (error) {
-      dispatch({ type: 'AUTH_FAILURE', payload: 'Error' });
+      dispatch({ type: 'AUTH_FAILURE' });
       throw error;
     }
   };
@@ -138,7 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         payload: response 
       });
     } catch (error) {
-      dispatch({ type: 'AUTH_FAILURE', payload: 'Erreur lors de l\'inscription' });
+      dispatch({ type: 'AUTH_FAILURE' });
       throw error;
     }
   };
