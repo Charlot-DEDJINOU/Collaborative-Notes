@@ -1,16 +1,18 @@
 export type NoteVisibility = 'private' | 'shared' | 'public';
 
+export interface UserNote {
+  _id: string;
+  email: string;
+}
+
 export interface Note {
   _id: string;
   title: string;
   content: string;
   tags: string[];
   visibility: NoteVisibility;
-  author: {
-    _id: string;
-    email: string;
-  };
-  sharedWith: string[];
+  author: UserNote;
+  sharedWith: UserNote[];
   publicToken?: string;
   createdAt: string;
   updatedAt: string;
@@ -53,9 +55,9 @@ export interface NotesContextType {
   isLoading: boolean;
   error: string | null;
   pagination: NotesResponse['pagination'] | null;
-  
+
   // Actions
-  fetchNotes: (filters?: NotesFilters) => Promise<void>;
+  fetchNotes: (type: string, filters?: NotesFilters) => Promise<void>;
   createNote: (data: CreateNoteData) => Promise<Note>;
   updateNote: (data: UpdateNoteData) => Promise<Note>;
   deleteNote: (id: string) => Promise<void>;
