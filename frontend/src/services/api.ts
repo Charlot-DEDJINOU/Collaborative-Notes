@@ -4,11 +4,11 @@ import axios from 'axios'
 import { getData } from './helper'
 
 // Récupère l'URL de l'API depuis le .env
-const apiUrl = import.meta.env.API_URI_BASE 
+const apiUrl = import.meta.env.VITE_API_URI_BASE 
 if (apiUrl) {
     axios.defaults.baseURL = apiUrl
 } else {
-    console.warn('[API] API_URI_BASE  non défini')
+    console.warn('[API] VITE_API_URI_BASE  non défini')
 }
 
 // Intercepteur pour ajouter le token d'authentification
