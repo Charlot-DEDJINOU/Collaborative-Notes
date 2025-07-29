@@ -30,37 +30,32 @@ export const createNote = async (req: IAuthRequest, res: Response) => {
   }
 };
 
-export const getNotes = async (req: IAuthRequest, res: Response) => {
+export const getOwnNotes = async (req: IAuthRequest, res: Response) => {
   try {
     const userId = req.user!._id;
     const { search, status, tags, page = 1, limit = 10 } = req.query;
 
-    let query: any = {
-      $or: [
-        { author: userId },
-        { sharedWith: userId },
-        // { visibility: 'public' }
-      ]
-    };
+    // On ne récupère que les notes dont l'utilisateur est l'auteur
+    let query: any = { author: userId };
 
-    // Filter by status
+    // Filtrage par statut de visibilité
     if (status && ['private', 'shared', 'public'].includes(status as string)) {
       query.visibility = status;
     }
 
-    // Filter by tags
+    // Filtrage par tags
     if (tags) {
-      const tagArray = (tags as string).split(',').map(tag => tag.trim());
+      const tagArray = (tags as string).split(',').map(t => t.trim());
       query.tags = { $in: tagArray };
     }
 
-    // Search in title and content
+    // Recherche plein-texte
     if (search) {
       query.$text = { $search: search as string };
     }
 
-    const pageNum = parseInt(page as string);
-    const limitNum = parseInt(limit as string);
+    const pageNum = parseInt(page as string, 10);
+    const limitNum = parseInt(limit as string, 10);
     const skip = (pageNum - 1) * limitNum;
 
     const notes = await Note.find(query)
@@ -82,7 +77,59 @@ export const getNotes = async (req: IAuthRequest, res: Response) => {
       }
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des notes:', error);
+    console.error('Erreur lors de la récupération des notes propres :', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+};
+
+export const getSharedNotes = async (req: IAuthRequest, res: Response) => {
+  try {
+    const userId = req.user!._id;
+    const { search, status, tags, page = 1, limit = 10 } = req.query;
+
+    // On ne récupère que les notes partagées avec l'utilisateur
+    let query: any = { sharedWith: userId };
+
+    // Filtrage par statut de visibilité
+    if (status && ['private', 'shared', 'public'].includes(status as string)) {
+      query.visibility = status;
+    }
+
+    // Filtrage par tags
+    if (tags) {
+      const tagArray = (tags as string).split(',').map(t => t.trim());
+      query.tags = { $in: tagArray };
+    }
+
+    // Recherche plein-texte
+    if (search) {
+      query.$text = { $search: search as string };
+    }
+
+    const pageNum = parseInt(page as string, 10);
+    const limitNum = parseInt(limit as string, 10);
+    const skip = (pageNum - 1) * limitNum;
+
+    const notes = await Note.find(query)
+      .populate('author', 'email')
+      .populate('sharedWith', 'email')
+      .sort({ updatedAt: -1 })
+      .skip(skip)
+      .limit(limitNum);
+
+    const total = await Note.countDocuments(query);
+
+    res.json({
+      notes,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        pages: Math.ceil(total / limitNum)
+      }
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des notes partagées :', error);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
@@ -139,6 +186,7 @@ export const updateNote = async (req: IAuthRequest, res: Response) => {
     Object.assign(note, updates);
     await note.save();
     await note.populate('author', 'email');
+    await note.populate('sharedWith', 'email');
 
     res.json({
       message: 'Note mise à jour avec succès',
