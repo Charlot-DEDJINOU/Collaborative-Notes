@@ -51,16 +51,7 @@ const AppLayout: React.FC = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
         </svg>
       ),
-    },
-    {
-      name: 'Recherche',
-      path: '/search',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      ),
-    },
+    }
   ];
 
   return (
@@ -129,20 +120,6 @@ const AppLayout: React.FC = () => {
                       <p className="font-medium">Connecté en tant que</p>
                       <p className="text-secondary-500 truncate">{user?.email}</p>
                     </div>
-                    
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100 transition-colors duration-200"
-                    >
-                      Mon profil
-                    </Link>
-                    
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100 transition-colors duration-200"
-                    >
-                      Paramètres
-                    </Link>
                     
                     <div className="border-t border-secondary-200">
                       <button
@@ -220,13 +197,6 @@ const AppLayout: React.FC = () => {
                 
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-secondary-700">{user?.email}</p>
-                  <Link
-                    to="/profile"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block text-sm text-secondary-500 hover:text-secondary-700"
-                  >
-                    Mon profil
-                  </Link>
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
