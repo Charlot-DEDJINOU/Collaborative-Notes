@@ -8,21 +8,20 @@ import type {
 import { getResource, postResource, putResource, removeResource } from './api'
 
 export const useNotesService = () => {
-    async function getNotes(filters: NotesFilters = {}): Promise<NotesResponse> {
+    async function getNotes(type: string, filters: NotesFilters = {}): Promise<NotesResponse> {
         try {
             const params = new URLSearchParams()
 
             if (filters.search) params.append('search', filters.search)
-            if (filters.visibility) params.append('visibility', filters.visibility)
-            if (filters.tags && filters.tags.length > 0) {
-                filters.tags.forEach(tag => params.append('tags', tag))
-            }
+            if (filters.visibility) params.append('status', filters.visibility)
+            if (filters.tags && filters.tags.length > 0) params.append('tags', filters.tags.join(','))
             if (filters.page) params.append('page', filters.page.toString())
             if (filters.limit) params.append('limit', filters.limit.toString())
 
             const query = params.toString()
-            const endpoint = `/notes${query ? `?${query}` : ''}`
+            const endpoint = `/notes/${type}${query ? `?${query}` : ''}`
 
+            console.log(endpoint)
             const response = await getResource<NotesResponse>(endpoint)
             return response.data
         } catch (error) {
@@ -33,8 +32,8 @@ export const useNotesService = () => {
 
     async function getNoteById(id: string): Promise<Note> {
         try {
-            const response = await getResource<Note>(`/notes/${id}`)
-            return response.data
+            const response = await getResource<any>(`/notes/${id}`)
+            return response.data.note
         } catch (error) {
             console.error(`[NOTES] Erreur lors de la récupération de la note ${id} :`, error)
             throw error
@@ -43,8 +42,8 @@ export const useNotesService = () => {
 
     async function createNote(data: CreateNoteData): Promise<Note> {
         try {
-            const response = await postResource<Note>('/notes', data)
-            return response.data
+            const response = await postResource<any>('/notes', data)
+            return response.data.note
         } catch (error) {
             console.error('[NOTES] Erreur lors de la création de la note :', error)
             throw error
@@ -54,8 +53,8 @@ export const useNotesService = () => {
     async function updateNote(data: UpdateNoteData): Promise<Note> {
         try {
             const { _id, ...updateData } = data
-            const response = await putResource<Note>('/notes', _id, updateData)
-            return response.data
+            const response = await putResource<any>('/notes', _id, updateData)
+            return response.data.note
         } catch (error) {
             console.error(`[NOTES] Erreur lors de la mise à jour de la note ${data._id} :`, error)
             throw error
@@ -73,7 +72,7 @@ export const useNotesService = () => {
 
     async function shareNote(noteId: string, userEmail: string): Promise<void> {
         try {
-            await postResource(`/notes/${noteId}/share`, { email: userEmail })
+            await postResource(`/notes/${noteId}/share`, { userEmail: userEmail })
         } catch (error) {
             console.error(`[NOTES] Erreur lors du partage de la note ${noteId} :`, error)
             throw error
@@ -90,11 +89,11 @@ export const useNotesService = () => {
         }
     }
 
-    async function removeUserFromNote(noteId: string, userId: string): Promise<void> {
+    async function removeUserFromNote(noteId: string, userEmail: string): Promise<void> {
         try {
-            await removeResource(`/notes/${noteId}/unshare`, userId)
+            await postResource(`/notes/${noteId}/unshare`, { userEmail })
         } catch (error) {
-            console.error(`[NOTES] Erreur lors de la suppression de l'utilisateur ${userId} de la note ${noteId} :`, error)
+            console.error(`[NOTES] Erreur lors de la suppression de l'utilisateur ${userEmail} de la note ${noteId} :`, error)
             throw error
         }
     }
