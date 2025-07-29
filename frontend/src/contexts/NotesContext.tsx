@@ -128,12 +128,12 @@ function notesReducer(state: NotesState, action: NotesAction): NotesState {
 export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialState);
 
-  const fetchNotes = useCallback(async (filters?: NotesFilters) => {
+  const fetchNotes = useCallback(async (type: string, filters?: NotesFilters) => {
     dispatch({ type: 'FETCH_NOTES_START' });
     
     try {
       const finalFilters = { ...state.filters, ...filters };
-      const response = await notes.getNotes(finalFilters);
+      const response = await notes.getNotes(type, finalFilters);
       
       dispatch({ type: 'FETCH_NOTES_SUCCESS', payload: response });
       
