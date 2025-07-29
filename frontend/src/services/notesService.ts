@@ -81,8 +81,8 @@ export const useNotesService = () => {
 
     async function getPublicNote(token: string): Promise<Note> {
         try {
-            const response = await getResource<Note>(`/public/${token}`)
-            return response.data
+            const response = await getResource<any>(`/notes/public/${token}`)
+            return response.data.note
         } catch (error) {
             console.error(`[NOTES] Erreur lors de la récupération de la note publique ${token} :`, error)
             throw error
