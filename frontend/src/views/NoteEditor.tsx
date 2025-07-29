@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Plus, Globe, Users, Lock, Edit3, Save, ArrowLeft, Mail } from "lucide-react";
+import { X, Plus, Globe, Users, Lock, Edit3, Save, ArrowLeft, Mail, User } from "lucide-react";
 import MarkdownEditor from "../components/MarkdownEditor";
 import Button from "../components/commons/Button";
 import type { CreateNoteData, NoteVisibility, UserNote } from "../types/notes";
@@ -9,6 +9,7 @@ import { errorMessage, onServerSuccess } from "../services/helper";
 import { useParams } from "react-router-dom";
 import { useNotesService } from "../services/notesService";
 import MDEditor from '@uiw/react-md-editor';
+import { useAuth } from "../contexts/AuthContext";
 
 const NoteEditor = () => {
     const { noteId } = useParams()
@@ -20,6 +21,7 @@ const NoteEditor = () => {
     });
 
     const { createNote, updateNote } = useNotes();
+    const { user } = useAuth();
     const { getNoteById } = useNotesService();
     const [newTag, setNewTag] = useState("");
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -28,6 +30,8 @@ const NoteEditor = () => {
     const [isViewMode, setIsViewMode] = useState(!!noteId); // Mode vue si ID fourni
     const [originalData, setOriginalData] = useState<CreateNoteData | null>(null);
     const [updateSharedUsers, setUpdateSharedUsers] = useState<UserNote[] | null>(null)
+    const [updateAuthorEmail, setUpdateAuthorEmail] = useState<string | null>(null);
+    const [noteAuthor, setNoteAuthor] = useState<UserNote | null>(null)
 
     const visibilityOptions = [
         { value: 'private' as NoteVisibility, label: 'Privé', icon: Lock, color: 'text-purple-600', bg: 'bg-purple-50' },
@@ -56,6 +60,8 @@ const NoteEditor = () => {
             };
             setFormData(loadedData);
             setOriginalData(loadedData);
+            setUpdateAuthorEmail(noteData.author.email);
+            setNoteAuthor(noteData.author);
             if (noteData.sharedWith.length)
                 setUpdateSharedUsers(noteData.sharedWith)
         } catch (error) {
@@ -165,7 +171,7 @@ const NoteEditor = () => {
 
     const getPageDescription = () => {
         if (noteId) {
-            return isEditing ? "Modifiez votre note" : "Consultez les détails de votre note";
+            return isEditing ? "Modifiez votre note" : "Consultez les détails de la note";
         }
         return "Créez et organisez vos notes avec style";
     };
@@ -200,11 +206,26 @@ const NoteEditor = () => {
                     {/* Titre */}
                     <div className="space-y-2">
                         {isViewMode ? (
-                            <div>
-                                <label className="block text-sm font-semibold text-secondary-700 mb-2">
-                                    Titre de la note
-                                </label>
-                                <h2 className="text-2xl font-bold text-secondary-900">{formData.title}</h2>
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                                        Titre de la note
+                                    </label>
+                                    <h2 className="text-2xl font-bold text-secondary-900">{formData.title}</h2>
+
+                                    <div className="flex items-center gap-1 mt-2 text-primary">
+                                        <User className="w-4 h-4" />
+                                        {updateAuthorEmail}
+                                    </div>
+                                </div>
+                                {
+                                    noteAuthor?._id === user?._id && (
+                                        <Button onClick={handleEdit} variant="secondary">
+                                            <Edit3 className="w-4 h-4 mr-2" />
+                                            Éditer
+                                        </Button>
+                                    )
+                                }
                             </div>
                         ) : (
                             <Input
@@ -360,14 +381,18 @@ const NoteEditor = () => {
                         <div className="text-sm text-secondary-500">
                             {!isViewMode && "* Champs obligatoires"}
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 flex-wrap">
                             {isViewMode ? (
                                 // Boutons en mode vue
                                 <>
-                                    <Button onClick={handleEdit} variant="secondary">
-                                        <Edit3 className="w-4 h-4" />
-                                        Éditer
-                                    </Button>
+                                    {
+                                        noteAuthor?._id === user?._id && (
+                                            <Button onClick={handleEdit} variant="secondary">
+                                                <Edit3 className="w-4 h-4 mr-2" />
+                                                Éditer
+                                            </Button>
+                                        )
+                                    }
                                 </>
                             ) : (
                                 // Boutons en mode édition/création
