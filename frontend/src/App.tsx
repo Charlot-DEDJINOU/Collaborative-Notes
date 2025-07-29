@@ -9,6 +9,7 @@ import RegisterForm from './views/Register';
 import Notes from './views/Notes';
 import NotFound from './views/NotFound';
 import NoteEditor from './views/NoteEditor';
+import PublicNote from './views/PublicNote';
 // Import des pages (à créer)
 // import Dashboard from './pages/Dashboard';
 // import NoteEditor from './pages/NoteEditor';
@@ -43,19 +44,6 @@ const SearchPage = () => (
   </div>
 );
 
-const PublicNote = () => (
-  <div className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div className="px-4 py-6 sm:px-0">
-      <div className="border-4 border-dashed border-secondary-200 rounded-lg h-96 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-secondary-900 mb-2">Note publique</h2>
-          <p className="text-secondary-600">Affichage d'une note publique</p>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 
 function App() {
   return (
@@ -67,7 +55,7 @@ function App() {
               {/* Routes publiques */}
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
-              <Route path="/public/:token" element={<PublicNote />} />
+              <Route path="/public/:publicToken" element={<PublicNote />} />
 
               {/* Routes protégées */}
               <Route path="/" element={
@@ -80,6 +68,7 @@ function App() {
                 <Route path="notes/:type" element={<Notes />} />
                 <Route path="notes/new" element={<NoteEditor />} />
                 <Route path="notes/edit/:noteId" element={<NoteEditor />} />
+                <Route path='notes/show/:noteId' element={<NoteEditor />} />
                 <Route path="search" element={<SearchPage />} />
               </Route>
 
