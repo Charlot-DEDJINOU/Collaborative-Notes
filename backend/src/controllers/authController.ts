@@ -32,7 +32,7 @@ export const register = async (req: Request, res: Response) => {
             message: 'Utilisateur créé avec succès',
             token,
             user: {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 createdAt: user.createdAt
             }
@@ -66,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
             message: 'Connexion réussie',
             token,
             user: {
-                id: user._id,
+                _id: user._id,
                 email: user.email
             }
         });
@@ -81,7 +81,7 @@ export const getProfile = async (req: IAuthRequest, res: Response) => {
         const user = req.user!;
         res.json({
             user: {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 createdAt: user.createdAt
             }
