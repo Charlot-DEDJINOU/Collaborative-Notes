@@ -25,7 +25,7 @@ const APP_PRODUCTION_URI = process.env.APP_PRODUCTION_URI
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://collaborative-notes.vercel.app']
+    ? [ process.env.FRONT_APP_URI ?? '' ]
     : ['http://localhost:5173'],
   credentials: true
 }));
