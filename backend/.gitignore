@@ -102,4 +102,4 @@ package-lock.json
 *.temp
 
 # Custom
-backend/dist/
+dist/

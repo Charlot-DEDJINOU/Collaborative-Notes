@@ -16,8 +16,8 @@ const options = {
     servers: [
       {
         url: process.env.NODE_ENV === 'production' 
-          ? 'https://your-domain.com' 
-          : `http://localhost:${process.env.PORT || 3001}`,
+          ?  process.env.APP_PRODUCTION_URI
+          : `http://localhost:${process.env.APP_PORT || 3001}`,
         description: process.env.NODE_ENV === 'production' ? 'Production' : 'Development'
       }
     ],
