@@ -397,6 +397,20 @@ const Notes = () => {
                                             </div>
                                         )
                                     }
+                                    {
+                                        note.author._id !== user?._id && (
+                                            <Link to={`/notes/show/${note._id}`}>
+                                                <Button
+                                                    onClick={() => null}
+                                                    variant='success'
+                                                    className="flex items-center gap-2 bg-secondary-800 text-white"
+                                                >
+                                                    <Eye className="w-4 h-4" />
+                                                    Voir plus
+                                                </Button>
+                                            </Link>
+                                        )
+                                    }
                                     {note.publicToken && (
                                         <div className="mt-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center space-x-4">
                                             <Link2 className="w-6 h-6 text-primary-500" />
