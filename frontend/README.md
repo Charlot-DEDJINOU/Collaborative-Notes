@@ -1,69 +1,75 @@
-# React + TypeScript + Vite
+# Collaborative Notes Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce dossier contient le frontend de l'application Collaborative Notes, développé avec React, TypeScript ,Vite et Tailwind CSS.
 
-Currently, two official plugins are available:
+## Prérequis
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js (v18 ou supérieur recommandé)
+- npm (v9 ou supérieur recommandé)
+- Un backend opérationnel (voir dossier `backend`)
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Cloner le dépôt**
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/Charlot-DEDJINOU/Collaborative-Notes
+cd frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Installer les dépendances**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. **Configurer les variables d'environnement**
+
+Créez un fichier `.env` à la racine du dossier `frontend` si besoin, par exemple :
+
+```env
+VITE_API_URI_BASE=http://localhost:3001
+```
+
+> **Remarque :** Adaptez l'URL selon l'adresse de votre backend.
+
+4. **Démarrer l'application**
+
+```bash
+npm run dev
+```
+
+L'application sera accessible sur [http://localhost:5173](http://localhost:5173) par défaut.
+
+## Structure du projet
+
+```
+frontend/
+  public/           # Fichiers statiques
+  src/
+    assets/        # Images et icônes
+    components/    # Composants réutilisables
+    contexts/      # Contextes React
+    hooks/         # Hooks personnalisés
+    layouts/       # Layouts globaux
+    services/      # Appels API et helpers
+    types/         # Types TypeScript
+    views/         # Pages principales
+    App.tsx        # Composant racine
+    main.tsx       # Point d'entrée
+    style.css      # Styles globaux
+```
+
+## Scripts utiles
+
+- `npm run dev` : Démarre le serveur de développement
+- `npm run build` : Génère la version de production
+- `npm run preview` : Prévisualise la build de production
+
+## Configuration Vite
+
+Les paramètres de Vite sont dans `vite.config.ts`.
+
+## Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
