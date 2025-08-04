@@ -16,9 +16,6 @@ services:
       - "4173:4173"
     env_file:
       - ./frontend/.env
-    environment:
-      ASSET_DIR: dist
-      APP_PREFIX: VITE_
     depends_on:
       - backend
     networks:
