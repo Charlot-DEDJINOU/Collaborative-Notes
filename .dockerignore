@@ -1,0 +1,12 @@
+dist
+# Ignorer les sous-projets lors d'un build global
+backend/
+frontend/
+.env
+*.env
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea
+.vscode
