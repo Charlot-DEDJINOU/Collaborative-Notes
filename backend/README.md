@@ -8,7 +8,7 @@ Ce projet constitue la partie backend de l'application Collaborative Notes, une 
 - npm (v9 ou supérieur recommandé)
 - Une base de données MongoDB (locale ou distante)
 
-## Installation
+## Installation (Node.js ou Docker)
 
 1. **Cloner le dépôt**
 
@@ -17,8 +17,7 @@ git clone https://github.com/Charlot-DEDJINOU/Collaborative-Notes
 cd backend
 ```
 
-2. **Installer les dépendances**
-
+2. **Installer les dépendances (Node.js)**
 ```bash
 npm install
 ```
@@ -38,20 +37,26 @@ JWT_SECRET=un_secret_pour_le_jwt
 
 > **Remarque :** Adaptez les valeurs selon votre environnement.
 
+
 4. **Démarrer le serveur**
 
 - En mode développement :
-
 ```bash
 npm run dev
 ```
-
 - En mode production :
-
 ```bash
 npm run build
 npm start
 ```
+
+## Utilisation avec Docker
+
+Vous pouvez aussi lancer le backend avec Docker Compose :
+```bash
+docker-compose up --build
+```
+Le fichier `.dockerignore` local optimise la taille de l’image.
 
 ## Fonctionnalités principales
 
