@@ -53,7 +53,9 @@ L’ensemble est déjà déployé en ligne, avec :
 - **Documentation de l’API (Swagger)** : [https://collaborative-notes-oeoa.onrender.com/api-docs/](https://collaborative-notes-oeoa.onrender.com/api-docs/)
 - **Dépôt Git public** : [https://github.com/Charlot-DEDJINOU/Collaborative-Notes](https://github.com/Charlot-DEDJINOU/Collaborative-Notes)
 
-## Installation et exécution locale
+
+## Installation et exécution locale (Node.js ou Docker)
+
 
 ### 1. Cloner le dépôt
 
@@ -62,34 +64,35 @@ git clone https://github.com/Charlot-DEDJINOU/Collaborative-Notes.git
 cd Collaborative-Notes
 ```
 
-### 2. Installer le backend
+### 2. Lancer le projet en local (Node.js)
 
+Backend :
 ```bash
 cd backend
 npm install
 ```
-
-Configurer le fichier `.env` (voir `backend/README.md` pour le détail des variables nécessaires).
-
-Démarrer le backend :
-
+Configurer le fichier `.env` (voir `backend/README.md`).
 ```bash
 npm run dev
 ```
-
-L’API sera accessible par défaut sur [http://localhost:3001](http://localhost:3001)
-
-### 3. Installer le frontend
-
-Dans un autre terminal :
-
+Frontend (dans un autre terminal) :
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-L’application sera accessible sur [http://localhost:5173](http://localhost:5173)
+### 3. Lancer le projet avec Docker Compose
+
+Assurez-vous d’avoir Docker et docker-compose installés.
+
+```bash
+docker-compose up --build
+```
+
+Les services backend, frontend et MongoDB seront lancés automatiquement.
+
+> Des fichiers `.dockerignore` sont présents dans chaque dossier (`backend`, `frontend`) pour optimiser la taille des images Docker.
 
 ## Déploiement
 
@@ -98,15 +101,19 @@ L’application est déjà déployée et accessible en ligne :
 - **Frontend** : [https://collaborative-notes-xyz.vercel.app](https://collaborative-notes-xyz.vercel.app)
 - **API/Swagger** : [https://collaborative-notes-oeoa.onrender.com/api-docs/](https://collaborative-notes-oeoa.onrender.com/api-docs/)
 
+
 ## Structure du projet
 
 ```
 Collaborative-Notes/
   backend/    # API Express/Node.js
+    .dockerignore
   frontend/   # Application React/Vite
+    .dockerignore
 ```
 
 Pour plus de détails sur chaque partie, consultez les fichiers `README.md` respectifs dans `backend/` et `frontend/`.
+Des instructions spécifiques à Docker sont également présentes dans chaque sous-dossier.
 
 ## Contribution
 
