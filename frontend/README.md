@@ -8,7 +8,7 @@ Ce dossier contient le frontend de l'application Collaborative Notes, développ�
 - npm (v9 ou supérieur recommandé)
 - Un backend opérationnel (voir dossier `backend`)
 
-## Installation
+## Installation (Node.js ou Docker)
 
 1. **Cloner le dépôt**
 
@@ -17,8 +17,8 @@ git clone https://github.com/Charlot-DEDJINOU/Collaborative-Notes
 cd frontend
 ```
 
-2. **Installer les dépendances**
 
+2. **Installer les dépendances (Node.js)**
 ```bash
 npm install
 ```
@@ -33,13 +33,20 @@ VITE_API_URI_BASE=http://localhost:3001
 
 > **Remarque :** Adaptez l'URL selon l'adresse de votre backend.
 
-4. **Démarrer l'application**
 
+4. **Démarrer l'application**
 ```bash
 npm run dev
 ```
-
 L'application sera accessible sur [http://localhost:5173](http://localhost:5173) par défaut.
+
+## Utilisation avec Docker
+
+Vous pouvez aussi lancer le frontend avec Docker Compose :
+```bash
+docker-compose up --build
+```
+Le fichier `.dockerignore` local optimise la taille de l’image.
 
 ## Structure du projet
 
