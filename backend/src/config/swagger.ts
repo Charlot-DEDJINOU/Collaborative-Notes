@@ -10,7 +10,7 @@ const options = {
       contact: {
         name: 'Charlot DEDJINOU',
         email: 'dedjinoucharlotjoel@gmail.com',
-        website: "https://charlot-dedjinou.vercel.app"
+        website: "https://charlotdedjinou.com"
       }
     },
     servers: [
